@@ -6,6 +6,7 @@ def Get_Weather(city,date):
   cl=''        #Cloud
   pr=''         #Pressure
   # write code here
+  
 
 
   
