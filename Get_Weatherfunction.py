@@ -6,10 +6,13 @@ def Get_Weather(city,date):
   cl=''        #Cloud
   pr=''         #Pressure
   # write code here
-  
-
-
-  
+  def loop():
+    i=0
+    while i<10:
+      print(i)
+      i+=1
+      goto loop
+  loop()
   result={
     "Hum":h1,
     "Temp":t1,
