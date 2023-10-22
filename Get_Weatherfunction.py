@@ -1,4 +1,9 @@
 def Get_Weather(city,dateT):
+  
+  def SplitDate(d):
+    listdat=[int(d[0:4]),int(d[5:7]),int(d[8:10])]
+    return listdat
+  
   def GetWeatherDict(cityname,dat):
     try:
         import requests
@@ -18,12 +23,6 @@ def Get_Weather(city,dateT):
                 print(f"City '{city_name}' not found.")
         else:
             print(f"Request failed with status code {response.status_code}")
-
-
-        
-        def SplitDate(d):
-          listdat=[int(d[0:4]),int(d[5:7]),int(d[8:10])]
-          return listdat
 
         def UNIX_TimeConv(datelist):
           import datetime
@@ -51,9 +50,10 @@ def Get_Weather(city,dateT):
         return
 
   #get Todays date in yyyy-mm-dd as string
-  dateOfTdy="yyyy-mm-dd"
+  from datetime import date
+  dateOfTdy=date.today()
   
-  if dateT>=dateOfTdy:
+  if date(SplitDate(dateT)[0],SplitDate(dateT)[1],SplitDate(dateT)[2])>=dateOfTdy:
     class dayWeather:
       def __init__(self,date1):
         #attributes
@@ -72,11 +72,12 @@ def Get_Weather(city,dateT):
     
   
     #add date time function to take 5 dates before current date
-    d1=dayWeather(dateOfTdy-5) # 5 day before today
-    d2=dayWeather(dateOfTdy-4) # 4 day before today
-    d3=dayWeather(dateOfTdy-3) # 3 day before today
-    d4=dayWeather(dateOfTdy-2) # 2 day before today
-    d5=dayWeather(dateOfTdy-1) # 1 day before today
+    from datetime import date
+    d1=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 5 day before today
+    d2=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 4 day before today
+    d3=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 3 day before today
+    d4=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 2 day before today
+    d5=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 1 day before today
   
     # Getting date Range
     import datetime
