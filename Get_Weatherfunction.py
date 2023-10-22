@@ -60,13 +60,13 @@ def Get_Weather(city,dateT):
         self.date=date1
         WeatherData=GetWeatherDict(city,date1)
         #add api here to fetch the bellow values
-        h=WeatherData["humidity"]     #Humidity
-        t=WeatherData["temp"]    #Temperature
-        fl=WeatherData["feels_like"]    #FeelsLike
-        ws=WeatherData["windspeed"]    #Windspeed
-        cl=WeatherData["Clouds"]    #Cloud
-        pr=WeatherData["pressure"]  #Pressure
-        rn=WeatherData["rain"]      #Rainfall
+        self.h=WeatherData["humidity"]     #Humidity
+        self.t=WeatherData["temp"]    #Temperature
+        self.fl=WeatherData["feels_like"]    #FeelsLike
+        self.ws=WeatherData["windspeed"]    #Windspeed
+        self.cl=WeatherData["Clouds"]    #Cloud
+        self.pr=WeatherData["pressure"]  #Pressure
+        self.rn=WeatherData["rain"]      #Rainfall
         
     # write code here
     
@@ -139,13 +139,13 @@ def Get_Weather(city,dateT):
     # send api request to get data and unpack the result and map to the respective elements
     WeatherData=GetWeatherDict(city,dateT)
     #add api here to fetch the bellow values
-    h=WeatherData["humidity"]     #Humidity
-    t=WeatherData["temp"]    #Temperature
-    fl=WeatherData["feels_like"]    #FeelsLike
-    ws=WeatherData["windspeed"]    #Windspeed
-    cl=WeatherData["Clouds"]    #Cloud
-    pr=WeatherData["pressure"]  #Pressure
-    rn=WeatherData["rain"]      #Rainfall
+    h1=WeatherData["humidity"]     #Humidity
+    t1=WeatherData["temp"]    #Temperature
+    fl1=WeatherData["feels_like"]    #FeelsLike
+    ws1=WeatherData["windspeed"]    #Windspeed
+    cl1=WeatherData["Clouds"]    #Cloud
+    pr1=WeatherData["pressure"]  #Pressure
+    rn1=WeatherData["rain"]      #Rainfall
     
   result={
     "Humidity":h1,
