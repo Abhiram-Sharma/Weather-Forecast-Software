@@ -10,7 +10,7 @@ import datetime
 from datetime import date                              #Import date from datetime library
 def loop(n):
     if n<=1:
-        if n==0:                                        
+        if n<=0:                                        
             print('The weather on '+date2+' is:')      #In case the date is before current day
         return 1                                     
     else:
