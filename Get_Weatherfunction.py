@@ -6,12 +6,21 @@ def Get_Weather(city,date):
   cl=''        #Cloud
   pr=''         #Pressure
   # write code here
-  def loop(n):
-    if n==0:
-      reutrn 1
+from datetime import date
+def loop(n):
+    if n<=0:
+        print('The weather on that date was :')
+        return 1
     else:
-      return n*loop(n-1)
-    print(loop(5))  
+        
+        return n*loop(n-1)
+date1=str(date.today())
+date2=input('Enter the second date: ')
+datetime1=date.fromisoformat(date1)
+datetime2=date.fromisoformat(date2)
+x=str(datetime2-datetime1)
+l=x.split()   
+print(loop(int(l[0]))) 
   result={
     "Hum":h1,
     "Temp":t1,
