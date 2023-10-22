@@ -24,7 +24,7 @@ while True:
         break
 
     if event == 'Get Weather':
-        city = values['city']
+        city = values['city'].lower()
         DateT = values['Date']
 
         # fetch the weather data
