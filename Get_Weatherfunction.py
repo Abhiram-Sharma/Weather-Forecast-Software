@@ -1,10 +1,14 @@
 def Get_Weather(city,date):
-  h=''        #Humidity
-  t=''        #Temperature
-  fl=''       #FeelsLike
-  ws=''        #Windspeed
-  cl=''        #Cloud
-  pr=''         #Pressure
+  class dayWeather:
+    def __init__(self,date,h,t,fl,ws,cl,pr):
+      #attributes
+      self.date=date
+      self.h=h      #Humidity
+      self.t=t      #Temperature
+      self.fl=fl    #FeelsLike
+      self.ws=ws    #Windspeed
+      self.cl=cl    #Cloud
+      self.pr=pr    #Pressure
   # write code here
 
   # Getting date Range
@@ -30,22 +34,27 @@ def Get_Weather(city,date):
   def weightedAvg(d1,d2,d3,d4,d5):
     d=((d11*9)+(d2*6)+(d3*5)+(d4*4)+(d5*2))/26
     return d
-'''
-  def paramCalc(n, d1,d2,d3,d4,d5):
-    if n==0:
-      return weightedAvg(d1,d2,d3,d4,d5) #today
-    elif n==1:
-      return weightedAvg(weightedAvg(n-1),d2,d3,d4,d5) #1 days
-    elif n==2:
-      return weightedAvg(weightedAvg(n-1),d2,d3,d4,d5) #2 days
-    elif n==3:
-      return weightedAvg(weightedAvg(n-1),weightedAvg(n-2),d3,d4,d5) #3 days
-    elif n==4:
-      return weightedAvg(weightedAvg(n-1),weightedAvg(n-2),weightedAvg(n-3),d4,d5) #4 days
-    elif n==5:
-      return weightedAvg(weightedAvg(n-1),weightedAvg(n-2),weightedAvg(n-3),weightedAvg(n-4),d5) #5 days
-    return weightedAvg(weightedAvg(n-1),weightedAvg(n-2),weightedAvg(n-3),weightedAvg(n-4),weightedAvg(n-5)) # 6days
-  '''
+
+  def paramCalc(n, d1, d2, d3, d4, d5):
+    if n == 1:
+        return d1
+    elif n == 2:
+        return d2
+    elif n == 3:
+        return d3
+    elif n == 4:
+        return d4
+    elif n == 5:
+        return d5
+    else:
+        # Recursively calculate the parameter for day n as the average of the past 5 days
+        param_n_minus_1 = paramCalc(n - 1, d1, d2, d3, d4, d5)
+        param_n_minus_2 = paramCalc(n - 2, d1, d2, d3, d4, d5)
+        param_n_minus_3 = paramCalc(n - 3, d1, d2, d3, d4, d5)
+        param_n_minus_4 = paramCalc(n - 4, d1, d2, d3, d4, d5)
+        param_n_minus_5 = paramCalc(n - 5, d1, d2, d3, d4, d5)
+        return weightedAvg(param_n_minus_1, param_n_minus_2, param_n_minus_3, param_n_minus_4 ,param_n_minus_5)
+
   result={
     "Hum":h1,
     "Temp":t1,
