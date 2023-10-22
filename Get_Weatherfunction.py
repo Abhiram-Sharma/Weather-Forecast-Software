@@ -1,13 +1,11 @@
-def Get_Weather(city,date):
-  def GetWeatherDict(cityname,dateandtime):
+def Get_Weather(city,dateT):
+  def GetWeatherDict(cityname,dat):
     try:
         import requests
-
         geonames_username = 'abaf2023'
         city_name = cityname
 
         url = f'http://api.geonames.org/searchJSON?q={city_name}&maxRows=1&username={geonames_username}'
-        print(url)
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -22,18 +20,21 @@ def Get_Weather(city,date):
             print(f"Request failed with status code {response.status_code}")
 
 
-        dtn=dateandtime #normal format
-        def SplitDate(d)
+        
+        def SplitDate(d):
+          listdat=[int(d[0:4]),int(d[5:7]),int(d[8:10])]
+          return listdat
 
-        def UNIX_TimeConv(year,month,date):
-          datentime=datetime.datetime(year,month,date,00,00,00)
+        def UNIX_TimeConv(datelist):
+          import datetime
+          datentime=datetime.datetime(datelist[0],datelist[1],datelist[2],00,00,00)
           UNIX_dateTime=datentime.timestamp()
           return UNIX_dateTime
         
+        dtn=SplitDate(dat)
         dt=UNIX_TimeConv(dtn)
-
-        print(response)
-        wAPIkey=""
+      
+        wAPIkey="" #API key for Open weather Map history API
         url = f'https://history.openweathermap.org/data/3.0/history/timemachine?lat={lat}&lon={lon}&dt={dt}&appid={wAPIkey}'
         response = requests.get(url)
 
@@ -44,22 +45,27 @@ def Get_Weather(city,date):
         d["Clouds"]=response["clouds"]["all"]
         d["rain"]=response["rain"]["1h"]
         return d
+      
     except Exception as e:
         print("Error Occured :"+str(e))
+        return
 
   
   if date>=dateOfTdy:
     class dayWeather:
-      def __init__(self,date):
+      def __init__(self,date1):
         #attributes
-        self.date=date
+        self.date=date1
+        WeatherData=GetWeatherDict(city,date1)
         #add api here to fetch the bellow values
-        h=""     #Humidity
-        t=""    #Temperature
-        fl=""    #FeelsLike
-        ws=""    #Windspeed
-        cl=""    #Cloud
-        pr=""  #Pressure
+        h=WeatherData["humidity"]     #Humidity
+        t=WeatherData["temp"]    #Temperature
+        fl=WeatherData["feels_like"]    #FeelsLike
+        ws=WeatherData["windspeed"]    #Windspeed
+        cl=WeatherData["Clouds"]    #Cloud
+        pr=WeatherData["pressure"]  #Pressure
+        rn=WeatherData["rain"]      #Rainfall
+        
     # write code here
   
     #add date time function to take 5 dates before current date
@@ -121,33 +127,29 @@ def Get_Weather(city,date):
     ws1=parammCalc(n,d1.ws,d2.ws,d3.ws,d4.ws,d5.ws)
     cl1=parammCalc(n,d1.cl,d2.cl,d3.cl,d4.cl,d5.cl)
     pr1=parammCalc(n,d1.pr,d2.pr,d3.pr,d4.pr,d5.pr)
-    
-    result={
-      "Hum":h1,
-      "Temp":t1,
-      "Feels":fl1,
-      "Wind":ws1,
-      "Cloud":cl1,
-      "Pressure":pr1,
-    }
-    return result
+    rn1=parammCalc(n,d1.rn,d2.rn,d3.rn,d4.rn,d5.rn)
     
   else:
     # send api request to get data and unpack the result and map to the respective elements
-    h1=""
-    t1=""
-    fl1=""
-    ws1=""
-    cl1=""
-    pr1=""
+    WeatherData=GetWeatherDict(city,dateT)
+    #add api here to fetch the bellow values
+    h=WeatherData["humidity"]     #Humidity
+    t=WeatherData["temp"]    #Temperature
+    fl=WeatherData["feels_like"]    #FeelsLike
+    ws=WeatherData["windspeed"]    #Windspeed
+    cl=WeatherData["Clouds"]    #Cloud
+    pr=WeatherData["pressure"]  #Pressure
+    rn=WeatherData["rain"]      #Rainfall
     
-    result={
-      "Hum":h1,
-      "Temp":t1,
-      "Feels":fl1,
-      "Wind":ws1,
-      "Cloud":cl1,
-      "Pressure":pr1,
+  result={
+    "Humidity":h1,
+    "Temp":t1,
+    "FeelsLike":fl1,
+    "Wind":ws1,
+    "Cloud":cl1,
+    "Pressure":pr1,
+    "Rain":rn1
     }
-    return result
+  return result
+
   
