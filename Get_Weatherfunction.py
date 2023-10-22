@@ -50,8 +50,10 @@ def Get_Weather(city,dateT):
         print("Error Occured :"+str(e))
         return
 
+  #get Todays date in yyyy-mm-dd as string
+  dateOfTdy="yyyy-mm-dd"
   
-  if date>=dateOfTdy:
+  if dateT>=dateOfTdy:
     class dayWeather:
       def __init__(self,date1):
         #attributes
@@ -67,6 +69,7 @@ def Get_Weather(city,dateT):
         rn=WeatherData["rain"]      #Rainfall
         
     # write code here
+    
   
     #add date time function to take 5 dates before current date
     d1=dayWeather(dateOfTdy-5) # 5 day before today
@@ -97,7 +100,7 @@ def Get_Weather(city,dateT):
   
     #Weighted average calculation
     def weightedAvg(d1,d2,d3,d4,d5):
-      d=((d11*9)+(d2*6)+(d3*5)+(d4*4)+(d5*2))/26
+      d=((d1*9)+(d2*6)+(d3*5)+(d4*4)+(d5*2))/26
       return d
   
     # Function to calculate parametre
@@ -121,13 +124,16 @@ def Get_Weather(city,dateT):
           param_n_minus_5 = paramCalc(n - 5, d1, d2, d3, d4, d5)
           return weightedAvg(param_n_minus_1, param_n_minus_2, param_n_minus_3, param_n_minus_4 ,param_n_minus_5)
     
-    h1=parammCalc(n,d1.h,d2.h,d3.h,d4.h,d5.h)
-    t1=parammCalc(n,d1.t,d2.t,d3.t,d4.t,d5.t)
-    fl1=parammCalc(n,d1.fl,d2.fl,d3.fl,d4.fl,d5.fl)
-    ws1=parammCalc(n,d1.ws,d2.ws,d3.ws,d4.ws,d5.ws)
-    cl1=parammCalc(n,d1.cl,d2.cl,d3.cl,d4.cl,d5.cl)
-    pr1=parammCalc(n,d1.pr,d2.pr,d3.pr,d4.pr,d5.pr)
-    rn1=parammCalc(n,d1.rn,d2.rn,d3.rn,d4.rn,d5.rn)
+    #define n here, number of days between today and the target day +5
+    n=""+5
+
+    h1=paramCalc(n,d1.h,d2.h,d3.h,d4.h,d5.h)
+    t1=paramCalc(n,d1.t,d2.t,d3.t,d4.t,d5.t)
+    fl1=paramCalc(n,d1.fl,d2.fl,d3.fl,d4.fl,d5.fl)
+    ws1=paramCalc(n,d1.ws,d2.ws,d3.ws,d4.ws,d5.ws)
+    cl1=paramCalc(n,d1.cl,d2.cl,d3.cl,d4.cl,d5.cl)
+    pr1=paramCalc(n,d1.pr,d2.pr,d3.pr,d4.pr,d5.pr)
+    rn1=paramCalc(n,d1.rn,d2.rn,d3.rn,d4.rn,d5.rn)
     
   else:
     # send api request to get data and unpack the result and map to the respective elements
@@ -151,5 +157,3 @@ def Get_Weather(city,dateT):
     "Rain":rn1
     }
   return result
-
-  
