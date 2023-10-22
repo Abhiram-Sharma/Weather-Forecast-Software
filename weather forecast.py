@@ -41,13 +41,13 @@ while True:
         '''
         wdata=GW(city,DateT)
         print(f"Weather Data for {city} on {DateT} :")
-        print(f"Humidity : {wdata['Humidity']}")
-        print(f"Windspeed : {wdata['Wind']}")
-        print(f"Clouds : {wdata['Cloud']} %")
-        print(f"Pressure : {wdata['Pressure']}")
-        print(f"Rain : {wdata['Rain']}")
-        print(f"Temperature : {wdata['Temp']}")
-        print(f"Feels Like : {wdata['FeelsLike']}")
+        print(f"--->> Humidity : {wdata['Humidity']}")
+        print(f"--->> Windspeed : {wdata['Wind']}")
+        print(f"--->> Clouds : {wdata['Cloud']} %")
+        print(f"--->> Pressure : {wdata['Pressure']}")
+        print(f"--->> Rain : {wdata['Rain']}")
+        print(f"--->> Temperature : {wdata['Temp']}")
+        print(f"--->> Feels Like : {wdata['FeelsLike']}")
 
 
 window.close()
