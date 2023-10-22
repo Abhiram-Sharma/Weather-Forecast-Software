@@ -1,4 +1,53 @@
 def Get_Weather(city,date):
+  def GetWeatherDict(cityname,dateandtime):
+    try:
+        import requests
+
+        geonames_username = 'abaf2023'
+        city_name = cityname
+
+        url = f'http://api.geonames.org/searchJSON?q={city_name}&maxRows=1&username={geonames_username}'
+        print(url)
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            if data['totalResultsCount'] > 0:
+                city_data = data['geonames'][0]
+                lat = city_data['lat']
+                lon = city_data['lng']
+            else:
+                print(f"City '{city_name}' not found.")
+        else:
+            print(f"Request failed with status code {response.status_code}")
+
+
+        dtn=dateandtime #normal format
+        def SplitDate(d)
+
+        def UNIX_TimeConv(year,month,date):
+          datentime=datetime.datetime(year,month,date,00,00,00)
+          UNIX_dateTime=datentime.timestamp()
+          return UNIX_dateTime
+        
+        dt=UNIX_TimeConv(dtn)
+
+        print(response)
+        wAPIkey=""
+        url = f'https://history.openweathermap.org/data/3.0/history/timemachine?lat={lat}&lon={lon}&dt={dt}&appid={wAPIkey}'
+        response = requests.get(url)
+
+        d=dict(response["main"])
+        del d["temp_min"]
+        del d["temp_max"]
+        d["windspeed"]=response["wind"]["speed"]
+        d["Clouds"]=response["clouds"]["all"]
+        d["rain"]=response["rain"]["1h"]
+        return d
+    except Exception as e:
+        print("Error Occured :"+str(e))
+
+  
   if date>=dateOfTdy:
     class dayWeather:
       def __init__(self,date):
