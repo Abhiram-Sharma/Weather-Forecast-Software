@@ -9,13 +9,13 @@ def Get_Weather(city,date):
 import datetime
 from datetime import date                              #Import date from datetime library
 def loop(n):
-    if n<=0:
-        if n<0:                                        
+    if n<=1:
+        if n==0:                                        
             print('The weather on '+date2+' is:')      #In case the date is before current day
         return 1                                     
     else:
         base=date.today()                              #alloting base date
-        print(base+datetime.timedelta(days=n+1))       #printing the days
+        print(base+datetime.timedelta(days=n))       #printing the days
         return n*loop(n-1)                              
 date1=str(date.today())                                #Taking Today's Date as Date1
 date2=input('Enter the second date: ')                 #Taking date entered as Date2
