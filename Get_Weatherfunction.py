@@ -5,13 +5,13 @@ def Get_Weather(city,dateT):
     return listdat
   
   def GetWeatherDict(cityname,dat):
-    try:
         import requests
         geonames_username = 'abaf2023'
         city_name = cityname
 
         url = f'http://api.geonames.org/searchJSON?q={city_name}&maxRows=1&username={geonames_username}'
         response = requests.get(url)
+        
 
         if response.status_code == 200:
             data = response.json()
@@ -24,60 +24,43 @@ def Get_Weather(city,dateT):
         else:
             print(f"Request failed with status code {response.status_code}")
 
-        def UNIX_TimeConv(datelist):
-          import datetime
-          datentime=datetime.datetime(datelist[0],datelist[1],datelist[2],00,00,00)
-          UNIX_dateTime=datentime.timestamp()
-          return UNIX_dateTime
-        
-        dtn=SplitDate(dat)
-        dt=UNIX_TimeConv(dtn)
-      
-        wAPIkey="" #API key for Open weather Map history API
-        url = f'https://history.openweathermap.org/data/3.0/history/timemachine?lat={lat}&lon={lon}&dt={dt}&appid={wAPIkey}'
+        stdt=dat
+        endt=stdt
+        url = f'https://archive-api.open-meteo.com/v1/archive?latitude={lat}&longitude={lon}&start_date={stdt}&end_date={endt}&daily=temperature_2m_mean,apparent_temperature_mean,rain_sum,windspeed_10m_max&timeformat=unixtime&timezone=Asia%2FSingapore'
         response = requests.get(url)
-
-        d=dict(response["main"])
-        del d["temp_min"]
-        del d["temp_max"]
-        d["windspeed"]=response["wind"]["speed"]
-        d["Clouds"]=response["clouds"]["all"]
-        d["rain"]=response["rain"]["1h"]
-        return d
-      
-    except Exception as e:
-        print("Error Occured :"+str(e))
-        return
+        a=response.json()
+        return a["daily"]
 
   #get Todays date in yyyy-mm-dd as string
   from datetime import date
+  import datetime
   dateOfTdy=date.today()
   
-  if date(SplitDate(dateT)[0],SplitDate(dateT)[1],SplitDate(dateT)[2])>=dateOfTdy:
+  if date(SplitDate(dateT)[0],SplitDate(dateT)[1],SplitDate(dateT)[2])>=(dateOfTdy-datetime.timedelta(days = 10)):
+    
     class dayWeather:
       def __init__(self,date1):
         #attributes
         self.date=date1
         WeatherData=GetWeatherDict(city,date1)
         #add api here to fetch the bellow values
-        self.h=WeatherData["humidity"]     #Humidity
-        self.t=WeatherData["temp"]    #Temperature
-        self.fl=WeatherData["feels_like"]    #FeelsLike
-        self.ws=WeatherData["windspeed"]    #Windspeed
-        self.cl=WeatherData["Clouds"]    #Cloud
-        self.pr=WeatherData["pressure"]  #Pressure
-        self.rn=WeatherData["rain"]      #Rainfall
+        self.t=WeatherData['temperature_2m_mean'][0]    #Temperature
+        self.fl=WeatherData['apparent_temperature_mean'][0]    #FeelsLike
+        self.ws=WeatherData['windspeed_10m_max'][0]    #Windspeed
+        self.rn=WeatherData['rain_sum'][0]      #Rainfall
         
     # write code here
     
   
     #add date time function to take 5 dates before current date
+    import datetime
     from datetime import date
-    d1=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 5 day before today
-    d2=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 4 day before today
-    d3=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 3 day before today
-    d4=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 2 day before today
-    d5=dayWeather(str(date.today()-datetime.timedelta(days = 5))) # 1 day before today
+    
+    d1=dayWeather(str(date.today()-datetime.timedelta(days = 14))) # 5 day before today
+    d2=dayWeather(str(date.today()-datetime.timedelta(days = 13))) # 4 day before today
+    d3=dayWeather(str(date.today()-datetime.timedelta(days = 12))) # 3 day before today
+    d4=dayWeather(str(date.today()-datetime.timedelta(days = 11))) # 2 day before today
+    d5=dayWeather(str(date.today()-datetime.timedelta(days = 10))) # 1 day before today
   
     # Getting date Range
     import datetime
@@ -89,6 +72,7 @@ def Get_Weather(city,dateT):
       x=str(datetime2-datetime1)                             #Substracting two dates
       l=x.split()                                            #spliting x into ['No of days','days','00:00:00']                                 
       return int(l[0]) if int(l[0])>0 else 0
+    
     #Weighted average calculation
     def weightedAvg(d1,d2,d3,d4,d5):
       d=((d1*9)+(d2*6)+(d3*5)+(d4*4)+(d5*2))/26
@@ -97,14 +81,29 @@ def Get_Weather(city,dateT):
     # Function to calculate parametre
     def paramCalc(n, d1, d2, d3, d4, d5):
       if n == 1:
-          return d1
+          if d1==None:
+            return 0
+          else:
+            return d1
       elif n == 2:
+        if d2==None:
+          return 0
+        else:
           return d2
       elif n == 3:
+        if d3==None:
+          return 0
+        else:
           return d3
       elif n == 4:
+        if d4==None:
+          return 0
+        else:
           return d4
       elif n == 5:
+        if d5==None:
+          return 0
+        else:
           return d5
       else:
           # Recursively calculate the parameter for day n as the average of the past 5 days
@@ -116,35 +115,26 @@ def Get_Weather(city,dateT):
           return weightedAvg(param_n_minus_1, param_n_minus_2, param_n_minus_3, param_n_minus_4 ,param_n_minus_5)
     
     #define n here, number of days between today and the target day +5
-    n=NoDays(dateT)+5
+    n=NoDays(dateT)+14
 
-    h1=paramCalc(n,d1.h,d2.h,d3.h,d4.h,d5.h)
     t1=paramCalc(n,d1.t,d2.t,d3.t,d4.t,d5.t)
     fl1=paramCalc(n,d1.fl,d2.fl,d3.fl,d4.fl,d5.fl)
     ws1=paramCalc(n,d1.ws,d2.ws,d3.ws,d4.ws,d5.ws)
-    cl1=paramCalc(n,d1.cl,d2.cl,d3.cl,d4.cl,d5.cl)
-    pr1=paramCalc(n,d1.pr,d2.pr,d3.pr,d4.pr,d5.pr)
     rn1=paramCalc(n,d1.rn,d2.rn,d3.rn,d4.rn,d5.rn)
     
   else:
     # send api request to get data and unpack the result and map to the respective elements
     WeatherData=GetWeatherDict(city,dateT)
     #add api here to fetch the bellow values
-    h1=WeatherData["humidity"]     #Humidity
-    t1=WeatherData["temp"]    #Temperature
-    fl1=WeatherData["feels_like"]    #FeelsLike
-    ws1=WeatherData["windspeed"]    #Windspeed
-    cl1=WeatherData["Clouds"]    #Cloud
-    pr1=WeatherData["pressure"]  #Pressure
-    rn1=WeatherData["rain"]      #Rainfall
+    t1=WeatherData['temperature_2m_mean'][0]    #Temperature
+    fl1=WeatherData['apparent_temperature_mean'][0]    #FeelsLike
+    ws1=WeatherData['windspeed_10m_max'][0]    #Windspeed
+    rn1=WeatherData['rain_sum'][0]      #Rainfall
     
   result={
-    "Humidity":h1,
     "Temp":t1,
     "FeelsLike":fl1,
     "Wind":ws1,
-    "Cloud":cl1,
-    "Pressure":pr1,
     "Rain":rn1
     }
   return result
