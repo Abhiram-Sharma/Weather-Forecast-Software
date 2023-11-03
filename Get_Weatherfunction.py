@@ -1,3 +1,7 @@
+import requests
+from datetime import date
+import datetime
+
 def Get_Weather(city,dateT):
   
   def SplitDate(d):
@@ -5,7 +9,7 @@ def Get_Weather(city,dateT):
     return listdat
   
   def GetWeatherDict(cityname,dat):
-        import requests
+        
         geonames_username = 'abaf2023'
         city_name = cityname
 
@@ -32,8 +36,7 @@ def Get_Weather(city,dateT):
         return a["daily"]
 
   #get Todays date in yyyy-mm-dd as string
-  from datetime import date
-  import datetime
+  
   dateOfTdy=date.today()
   
   if date(SplitDate(dateT)[0],SplitDate(dateT)[1],SplitDate(dateT)[2])>=(dateOfTdy-datetime.timedelta(days = 10)):
@@ -53,8 +56,6 @@ def Get_Weather(city,dateT):
     
   
     #add date time function to take 5 dates before current date
-    import datetime
-    from datetime import date
     
     d1=dayWeather(str(date.today()-datetime.timedelta(days = 14))) # 5 day before today
     d2=dayWeather(str(date.today()-datetime.timedelta(days = 13))) # 4 day before today
@@ -63,7 +64,6 @@ def Get_Weather(city,dateT):
     d5=dayWeather(str(date.today()-datetime.timedelta(days = 10))) # 1 day before today
   
     # Getting date Range
-    import datetime
     from datetime import date as dt                            #Import date from datetime library
     def NoDays(date2):                   
       date1=str(dt.today()-datetime.timedelta(days=1))                                #Taking Today's Date as Date1
