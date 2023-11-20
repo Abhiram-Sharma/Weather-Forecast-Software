@@ -36,12 +36,18 @@ while True:
             "Rain":rn1
             }
         '''
-        wdata=GW(city,DateT)
-        print(f"Weather Data for {city} on {DateT} :")
-        print(f"Windspeed : {round(wdata['Wind'],1)}")
-        print(f"Rain : {round(wdata['Rain'],1)}")
-        print(f"Temperature : {round(wdata['Temp'],1)}")
-        print(f"Feels Like : {round(wdata['FeelsLike'],1)}")
+        
+        city=city.capitalize()
+        try:
+            wdata=GW(city,DateT)
+            print(f"Weather Data for {city} on {DateT} :")
+            print(f"> Lattitude {wdata['lat']}° Longitude {wdata['lon']}°")
+            print(f"> Windspeed : {round(wdata['Wind']*5/18)} m/s")
+            print(f"> Rain : {round(wdata['Rain'])} mm")
+            print(f"> Temperature : {round(wdata['Temp'])}°C")
+            print(f"> Feels Like : {round(wdata['FeelsLike'])}°C\n")
+        except:
+            print(f"{city} does not exist\n")
         
 
 window.close()
