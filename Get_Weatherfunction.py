@@ -25,6 +25,8 @@ def Get_Weather(city,dateT):
                 lon = city_data['lng']
             else:
                 print(f"City '{city_name}' not found.")
+                lat="NA"
+                lon="NA"
         else:
             print(f"Request failed with status code {response.status_code}")
 
@@ -33,7 +35,10 @@ def Get_Weather(city,dateT):
         url = f'https://archive-api.open-meteo.com/v1/archive?latitude={lat}&longitude={lon}&start_date={stdt}&end_date={endt}&daily=temperature_2m_mean,apparent_temperature_mean,rain_sum,windspeed_10m_max&timeformat=unixtime&timezone=Asia%2FSingapore'
         response = requests.get(url)
         a=response.json()
-        return a["daily"]
+        res=a["daily"]
+        res["lat"]=lat
+        res["lon"]=lon
+        return res
 
   #get Todays date in yyyy-mm-dd as string
   
@@ -51,9 +56,9 @@ def Get_Weather(city,dateT):
         self.fl=WeatherData['apparent_temperature_mean'][0]    #FeelsLike
         self.ws=WeatherData['windspeed_10m_max'][0]    #Windspeed
         self.rn=WeatherData['rain_sum'][0]      #Rainfall
-        
-    # write code here
-    
+        self.lat=WeatherData['lat']
+        self.lon=WeatherData['lon']
+          
   
     #add date time function to take 5 dates before current date
     
@@ -78,7 +83,7 @@ def Get_Weather(city,dateT):
       d=((d1*9)+(d2*6)+(d3*5)+(d4*4)+(d5*2))/26
       return d
   
-    # Function to calculate parametre
+    # Function to calculate parameters
     def paramCalc(n, d1, d2, d3, d4, d5):
       if n == 1:
           if d1==None:
@@ -121,6 +126,8 @@ def Get_Weather(city,dateT):
     fl1=paramCalc(n,d1.fl,d2.fl,d3.fl,d4.fl,d5.fl)
     ws1=paramCalc(n,d1.ws,d2.ws,d3.ws,d4.ws,d5.ws)
     rn1=paramCalc(n,d1.rn,d2.rn,d3.rn,d4.rn,d5.rn)
+    lat=d1.lat
+    lon=d1.lon
     
   else:
     # send api request to get data and unpack the result and map to the respective elements
@@ -130,11 +137,15 @@ def Get_Weather(city,dateT):
     fl1=WeatherData['apparent_temperature_mean'][0]    #FeelsLike
     ws1=WeatherData['windspeed_10m_max'][0]    #Windspeed
     rn1=WeatherData['rain_sum'][0]      #Rainfall
+    lat=WeatherData['lat']
+    lon=WeatherData['lon']
     
   result={
     "Temp":t1,
     "FeelsLike":fl1,
     "Wind":ws1,
-    "Rain":rn1
+    "Rain":rn1,
+    "lat":lat,
+    "lon":lon
     }
   return result
