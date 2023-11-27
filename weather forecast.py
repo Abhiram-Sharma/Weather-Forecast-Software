@@ -1,6 +1,16 @@
 # theme_menu=['SandyBeach','Light brown 13','python','black','random']
+import os
+try:
+    import PySimpleGUI as sg
+except:
+    os.system(f'cmd /c "pip install PySimpleGUI"')
+    import PySimpleGUI as sg
+try:
+    import requests
+except:
+    os.system(f'cmd /c "pip install requests"')
+    import requests
 
-import PySimpleGUI as sg
 from Get_Weatherfunction import Get_Weather as GW
 
 # Define the layout
